@@ -25,31 +25,21 @@ If you don't want to develop anything, just enter few commands below.
 
 1. Install the package globally:
    ```sh
-   $ npm install peer -g
+   $ git clone https://github.com/Judimax/peerjs-server/tree/PR-socketio-support
    ```
 2. Run the server:
 
    ```sh
-   $ peerjs --port 9000 --key peerjs --path /myapp
+   $ node bin/peerjs --port 9000 --key peerjs --path /myapp
 
      Started PeerServer on ::, port: 9000, path: /myapp (v. 0.3.2)
    ```
 
 3. Check it: http://127.0.0.1:9000/myapp It should returns JSON with name, description and website fields.
 
-#### Docker
 
-Also, you can use Docker image to run a new container:
 
-```sh
-$ docker run -p 9000:9000 -d peerjs/peerjs-server
-```
 
-##### Kubernetes
-
-```sh
-$ kubectl run peerjs-server --image=peerjs/peerjs-server --port 9000 --expose -- --port 9000 --path /myapp
-```
 
 ### Create a custom server:
 
@@ -89,6 +79,27 @@ If you have your own server, you can attach PeerServer.
 </script>
 ```
 
+### Socketio?
+* you should not use path with socketio as socketio handles path paramters as namespaces its possible make a PR if you need it start at
+peerjs-server\src\services\socketioServer\index.ts:50
+
+also CORS is set to * make a PR if you know what to do
+```sh
+peerjs.js --port 9000 --key peerjs --server_type socketio
+
+Started PeerServer on ::, port: 9000, path: /
+```
+
+```js
+<script>
+	const peer = new Peer({
+		host: "localhost",
+		port: 9000,
+    clientType:"socketio"
+	});
+</script>
+```
+
 ## Config / CLI options
 
 You can provide config object to `PeerServer` function or specify options for `peerjs` CLI.
@@ -107,6 +118,8 @@ You can provide config object to `PeerServer` function or specify options for `p
 | `--allow_discovery`      | `allow_discovery`  | Allow to use GET `/peers` http API method to get an array of ids of all connected clients (boolean)                                                                                                                                                   |    No    |            |
 | `--cors`                 | `corsOptions`      | The CORS origins that can access this server                                                                                                                                                                                                          |
 |                          | `generateClientId` | A function which generate random client IDs when calling `/id` API method (`() => string`)                                                                                                                                                            |    No    | `uuid/v4`  |
+| `--server_type`          | `server_type`      | Specify the type of server to use: "websocket" or "socketio". This option determines the protocol for client-server communication.                                                                                                                     |    No    | `"websocket"` |
+
 
 ## Using HTTPS
 

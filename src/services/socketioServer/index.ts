@@ -47,6 +47,8 @@ export class SocketIOServer extends EventEmitter implements ISocketIOServer {
         origin: config.corsOptions.origin ? "*":"",
         // origin:"*"
       },
+      // TODO provide path support
+      // path
     });
 
     this.socketServer.on("connect", (socket) => {
