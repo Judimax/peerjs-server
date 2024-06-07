@@ -19,6 +19,7 @@ export interface IConfig {
 	readonly generateClientId?: () => string;
 	readonly createWebSocketServer?: (options: ServerOptions) => WebSocketServer;
 	readonly corsOptions: CorsOptions;
+	readonly server_type: "websocket" | "socketio";
 }
 
 const defaultConfig: IConfig = {
@@ -33,6 +34,7 @@ const defaultConfig: IConfig = {
 	proxied: false,
 	cleanup_out_msgs: 1000,
 	corsOptions: { origin: true },
+	server_type: "websocket",
 };
 
 export default defaultConfig;

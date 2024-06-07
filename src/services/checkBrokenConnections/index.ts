@@ -1,6 +1,8 @@
+import WebSocket from "ws";
 import type { IConfig } from "../../config/index.ts";
 import type { IClient } from "../../models/client.ts";
 import type { IRealm } from "../../models/realm.ts";
+import { Socket } from "socket.io";
 
 const DEFAULT_CHECK_INTERVAL = 300;
 
@@ -67,7 +69,12 @@ export class CheckBrokenConnections {
 			if (timeSinceLastPing < aliveTimeout) continue;
 
 			try {
-				client.getSocket()?.close();
+				const socket = client.getSocket()
+				if (socket instanceof WebSocket) {
+					socket?.close();
+				} else if (socket instanceof Socket){
+					socket?.disconnect()
+				}
 			} finally {
 				this.realm.clearMessageQueue(clientId);
 				this.realm.removeClientById(clientId);

@@ -13,6 +13,7 @@ export default ({
 
 	// Retrieve guaranteed random ID.
 	app.get("/id", (_, res: express.Response) => {
+
 		res.contentType("html");
 		res.send(realm.generateClientId(config.generateClientId));
 	});

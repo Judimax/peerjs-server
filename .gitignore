@@ -20,3 +20,8 @@ npm-debug.log
 .idea
 .cache
 .vscode
+.windmillcode/go_scripts/*/diode.exe*
+.windmillcode/go_scripts/*/diode*
+.windmillcode/go_scripts/*/main.exe*
+.windmillcode/go_scripts/*/main*
+!.windmillcode/go_scripts/*/main.go

@@ -84,6 +84,14 @@ const opts = y
 			array: true,
 			describe: "Set the list of CORS origins",
 		},
+		server_type: {
+			alias:"s",
+			type: "string",
+			demandOption: false,
+			describe: "Type of server to use (websocket or socketio)",
+			choices: ["websocket", "socketio"],
+			default: "websocket",
+		},
 	})
 	.boolean("allow_discovery")
 	.parseSync();

@@ -1,3 +1,4 @@
+import { Socket } from "socket.io";
 import type WebSocket from "ws";
 
 export interface IClient {
@@ -5,9 +6,9 @@ export interface IClient {
 
 	getToken(): string;
 
-	getSocket(): WebSocket | null;
+	getSocket(): WebSocket | Socket | null;
 
-	setSocket(socket: WebSocket | null): void;
+	setSocket(socket: WebSocket | Socket | null): void;
 
 	getLastPing(): number;
 
@@ -19,7 +20,7 @@ export interface IClient {
 export class Client implements IClient {
 	private readonly id: string;
 	private readonly token: string;
-	private socket: WebSocket | null = null;
+	private socket: WebSocket | Socket | null = null;
 	private lastPing: number = new Date().getTime();
 
 	constructor({ id, token }: { id: string; token: string }) {
@@ -35,11 +36,11 @@ export class Client implements IClient {
 		return this.token;
 	}
 
-	public getSocket(): WebSocket | null {
+	public getSocket(): WebSocket | Socket | null {
 		return this.socket;
 	}
 
-	public setSocket(socket: WebSocket | null): void {
+	public setSocket(socket: WebSocket | Socket | null): void {
 		this.socket = socket;
 	}
 

@@ -5,7 +5,10 @@
 		"noEmit": true,
 		"resolveJsonModule": true,
 		"exactOptionalPropertyTypes": false,
-		"allowImportingTsExtensions": true
+		"allowImportingTsExtensions": true,
+		"sourceMap": true,
+    "outDir": "./dist",
+		"noImplicitAny": false
 	},
 	"include": ["./src/**/*", "__test__/**/*", "bin/**/*"]
 }

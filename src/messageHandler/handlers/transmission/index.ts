@@ -1,7 +1,9 @@
+import WebSocket from "ws";
 import { MessageType } from "../../../enums.ts";
 import type { IClient } from "../../../models/client.ts";
 import type { IMessage } from "../../../models/message.ts";
 import type { IRealm } from "../../../models/realm.ts";
+import { Socket } from "socket.io";
 
 export const TransmissionHandler = ({
 	realm,
@@ -19,11 +21,13 @@ export const TransmissionHandler = ({
 		if (destinationClient) {
 			const socket = destinationClient.getSocket();
 			try {
-				if (socket) {
+				if (socket instanceof WebSocket) {
 					const data = JSON.stringify(message);
 
 					socket.send(data);
-				} else {
+				} else if (socket instanceof Socket) {
+					socket.emit("message",message);
+				}else {
 					// Neither socket no res available. Peer dead?
 					throw new Error("Peer dead");
 				}
@@ -31,9 +35,11 @@ export const TransmissionHandler = ({
 				// This happens when a peer disconnects without closing connections and
 				// the associated WebSocket has not closed.
 				// Tell other side to stop trying.
-				if (socket) {
+				if (socket instanceof WebSocket) {
 					socket.close();
-				} else {
+				} else if (socket instanceof Socket){
+					socket.disconnect()
+				}else {
 					realm.removeClientById(destinationClient.getId());
 				}
 
