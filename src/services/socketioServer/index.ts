@@ -43,12 +43,13 @@ export class SocketIOServer extends EventEmitter implements ISocketIOServer {
     this.path = `${path}${path.endsWith("/") ? "" : "/"}${WS_PATH}`;
 
     this.socketServer = new IOServer(server, {
+      // todo like this because of conflict if you can fix make a PR it supposed to be peerjs
+      path:"/peerjs-socketio",
       cors: {
         origin: config.corsOptions.origin ? "*":"",
         // origin:"*"
       },
-      // TODO provide path support
-      // path
+
     });
 
     this.socketServer.on("connect", (socket) => {
@@ -66,9 +67,10 @@ export class SocketIOServer extends EventEmitter implements ISocketIOServer {
       this._onSocketError(error);
     });
 
-    const { id, token, key } = socket.handshake.query;
+    const {  token, key } = socket.handshake.query;
+    const id = socket.id
 
-    if (!id || !token || !key) {
+    if ( !id || !token || !key) {
       this._sendErrorAndClose(socket, Errors.INVALID_WS_PARAMETERS);
       return;
     }
@@ -133,7 +135,12 @@ export class SocketIOServer extends EventEmitter implements ISocketIOServer {
 
     socket.on("message", (data) => {
       try {
-        const message = data as Writable<IMessage>;
+        let message:Writable<IMessage> ;
+        if(typeof data === "string"){
+          message = JSON.parse(data)
+        } else{
+          message = data
+        }
         message.src = client.getId();
         this.emit("message", client, message);
       } catch (e) {

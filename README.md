@@ -80,7 +80,7 @@ If you have your own server, you can attach PeerServer.
 ```
 
 ### Socketio?
-* you should not use path with socketio as socketio handles path paramters as namespaces its possible make a PR if you need it start at
+* you should not use path with socketio as socketio handles path paramters as namespaces were using peerjs as namespace for convenience to better integrate a secondary server into your main socketio server. its possible make a PR if you need it start at
 peerjs-server\src\services\socketioServer\index.ts:50
 
 also CORS is set to * make a PR if you know what to do

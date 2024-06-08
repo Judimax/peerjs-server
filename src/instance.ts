@@ -43,13 +43,17 @@ export const createInstance = ({
 		config,
 		messageHandler,
 	});
-	const checkBrokenConnections = new CheckBrokenConnections({
-		realm,
-		config,
-		onClose: (client) => {
-			app.emit("disconnect", client);
-		},
-	});
+	let checkBrokenConnections
+	if(config.server_type !== "socketio"){
+		checkBrokenConnections = new CheckBrokenConnections({
+			realm,
+			config,
+			onClose: (client) => {
+				app.emit("disconnect", client);
+			},
+		});
+	}
+
 
 	app.use(options.path, api);
 	//use mountpath for socket server
@@ -137,5 +141,7 @@ export const createInstance = ({
 
 
 	messagesExpire.startMessagesExpiration();
-	checkBrokenConnections.start();
+	if(config.server_type !== "socketio"){
+		checkBrokenConnections.start();
+	}
 };
