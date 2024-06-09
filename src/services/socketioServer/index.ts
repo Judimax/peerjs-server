@@ -43,16 +43,13 @@ export class SocketIOServer extends EventEmitter implements ISocketIOServer {
     this.path = `${path}${path.endsWith("/") ? "" : "/"}${WS_PATH}`;
 
     this.socketServer = new IOServer(server, {
-      // todo like this because of conflict if you can fix make a PR it supposed to be peerjs
-      path:"/peerjs-socketio",
       cors: {
         origin: config.corsOptions.origin ? "*":"",
         // origin:"*"
       },
+    }).of("/peerjs");
 
-    });
-
-    this.socketServer.on("connect", (socket) => {
+    this.socketServer.on("connection", (socket) => {
       this._onSocketConnection(socket);
     });
 

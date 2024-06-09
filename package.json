@@ -69,8 +69,8 @@
 		"test": "npm run lint && jest",
 		"coverage": "jest --coverage",
 		"start": "node dist/bin/peerjs.js --port ${PORT=9000}",
-		"start-socketio": "kill-port 9503 && node dist/bin/peerjs.js --port 9503 --key peerjs --server_type socketio",
-		"start-websocket": "kill-port 9503 && node dist/bin/peerjs.js --port 9503 --key peerjs",
+		"start-socketio": "kill-port 9503 && node dist/bin/peerjs.js --port 9503 --key peerjs --server_type socketio --sslkey %WML_CERT_KEY0% --sslcert %WML_CERT0%",
+		"start-websocket": "kill-port 9503 && node dist/bin/peerjs.js --port 9503 --key peerjs --sslkey %WML_CERT_KEY0% --sslcert %WML_CERT0%",
 		"dev": "nodemon --watch src -e ts --exec 'npm run build && npm run start'",
 		"dev-windows": "cross-env NODE_ENV=development nodemon --watch src -e ts --exec \"npm run build && npm run start-socketio\"",
 		"semantic-release": "semantic-release"
